@@ -36,6 +36,7 @@
                         $config .= "    define( 'TSA_DB_PASS', '" . $db_pass . "' );\n";
                         $config .= "    define( 'TSA_DB_NAME', '" . $db_name . "' );\n";
                         $config .= "    define( 'TSA_DB_PREFIX', '" . $db_tblprefix . "' );\n\n";
+                        $config .= "    // Twitch API stuff\n";
                         $config .= "    define( 'TSA_APIKEY', '" . $twitch_api_key . "' );\n";
                         $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
                         $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";

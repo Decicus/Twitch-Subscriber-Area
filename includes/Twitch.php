@@ -27,10 +27,67 @@ class Twitch {
 
         return $resp;
     }
+    
+    function authenticateURL( $scope = [] ) {
+        $s_scope = implode( "+", $scope );
+        $url = $this::API_URL . 'oauth2/authorize?response_type=code&client_id=' . $this->API_KEY . '&redirect_uri=' . $this->REDIRECT_URL . '&scope=' . $s_scope;
+        return $url;
+    }
+    
+    function getAccessToken( $c ) {
+        $curl = curl_init( $this::API_URL . 'oauth2/token' );
+        curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1 );
+        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_POST, 1 );
+        $f = [
+            'client_id' => $this->API_KEY,
+            'client_secret' => $this->API_SECRET,
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => $this->REDIRECT_URL,
+            'code' => $c
+        ];
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, $f );
+        $d = curl_exec( $curl );
+        $resp = json_decode( $d, true );
+        if( isset( $resp[ 'access_token' ] ) ) {
+            return $resp[ 'access_token' ];
+        }
+        else {
+            return false;
+        }
+    }
 
+    // Only requires username
     function getUserID( $name = '' ) {
         $data = $this->get( 'users/' . $name );
         return ( isset( $data['_id'] ) ? $data['_id'] : false );
     }
+    
+    function getName( $at = '' ) {
+        $header = [ 'Authorization: OAuth ' . $at ];
+        $data = $this->get( 'user', $header );
+        return ( isset( $data['name'] ) ? $data['name'] : NULL );
+    }
+    
+    // This is different from getName(), because this includes capitalization (and possibly spaces for some odd reason - read: http://ask.fm/Xangold/answer/125800359321)
+    function getDisplayName( $at = '' ) {
+        $header = [ 'Authorization: OAuth ' . $at ];
+        $data = $this->get( 'user', $header );
+        return ( isset( $data['display_name'] ) ? $data['display_name'] : NULL );
+    }
+    
+    // Requires access token with user_read scope
+    function getUserIDFromAT( $at = '' ) {
+        $header = [ 'Authorization: OAuth ' . $at ];
+        $data = $this->get( 'user', $header );
+        return ( isset( $data['_id'] ) ? $data['_id'] : NULL );
+    }
+    
+    function isPartner( $name = '' ) {
+        $data = $this->get( 'channels/' . $name );
+        return ( isset( $data['error'] ) ? NULL : $data['partner'] )
+    }
+    
 }
 ?>

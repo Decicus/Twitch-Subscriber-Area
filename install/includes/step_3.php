@@ -23,10 +23,10 @@
                 echo '<div class="alert alert-danger">MySQL Error! <strong>' . mysqli_error( $con ) . '</strong></div>';
             } else {
                 $db_tblprefix = mysqli_real_escape_string( $con, $db_tblprefix );
-                $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "info( id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), title varchar(255), maintext text)" );
+                $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "posts( id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), title varchar(255), body text)" );
                 if( $result ) {
-                    echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'info" table.</div>';
-                    $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "settings( setting_id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(setting_id), meta_key varchar(64) UNIQUE, meta_value text)" );
+                    echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'posts" table.</div>';
+                    $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "settings( setting_id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(setting_id), meta_key varchar(64) UNIQUE, meta_value mediumtext)" );
                     if( $result ) {
                         echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'settings" table.</div>';
                         $config = "<?php \n";

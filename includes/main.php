@@ -3,4 +3,5 @@
     date_default_timezone_set( 'UTC' );
     require 'config.php';
     require 'Twitch.php';
+    $page = '';
 ?>

@@ -29,7 +29,7 @@
         <input type="password" class="form-control" id="twitch_secret" name="twitch_secret" />
     </div>
     <div class="form-group">
-        <label for="twitch_redirect">Twitch redirect URL (Default: <?php echo $_SESSION['TSAURL']; ?>):</label>
+        <label for="twitch_redirect">Twitch redirect URL (Default: <?php echo $_SESSION['TSAURL']; ?> - This should be your current URL without "install/install.php" after it.):</label>
         <input type="text" class="form-control" id="twitch_redirect" name="twitch_redirect" placeholder="<?php echo $_SESSION['TSAURL']; ?>" />
     </div>
     <button class="btn btn-success">Continue to step #3</button>

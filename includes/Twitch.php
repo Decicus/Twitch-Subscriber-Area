@@ -86,7 +86,24 @@ class Twitch {
     
     function isPartner( $name = '' ) {
         $data = $this->get( 'channels/' . $name );
-        return ( isset( $data['error'] ) ? NULL : $data['partner'] )
+        return ( isset( $data['error'] ) ? NULL : $data['partner'] );
+    }
+    
+    // 401 = invalid access token/no access, 404 = not subscribed, 100 = subscribed.
+    function isSubscribed( $at = '', $name = '', $chan = '' ) {
+        $header = [ 'Authorization: OAuth ' . $at ];
+        $data = $this->get( 'users/' . $name . '/subscriptions/' . $chan, $header );
+        if( isset( $data['created_at'] ) ) {
+            return 100;
+        } else {
+            return $data['status'];
+        }
+    }
+    
+    // Does not require access token, only the name (usually lowercase) itself. - Returns capitalization
+    function getDisplayNameNoAT( $name = '' ) {
+        $data = $this->get( 'users/' . $name );
+        return ( isset( $data['display_name'] ) ? $data['display_name'] : false );
     }
     
 }

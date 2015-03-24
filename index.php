@@ -36,18 +36,17 @@
     <body>
         <?php include 'includes/nav.php'; ?>
         <div class="container">
-
                 <?php
                 if( $installFinished ) {
                     if( $installExists ) {
                 ?>
-                <div class="alert alert-danger">Installation appears to be finished and install directory still exists, please delete this directory.</div>
+                <div class="alert alert-danger">Installation appears to be finished and install directory still exists, please delete this directory (preferred) or rename it.</div>
                 <?php
                     } else {
                     $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
                     $authenticateURL = $Twitch->authenticateURL( [ 'user_read', 'user_subscriptions' ] );
                 ?>
-                    <div class="page-header"><h1><?php echo $title; ?></h1></div>
+                    <div class="page-header"><h1><?php echo $title; ?> - Home</h1></div>
                     <div class="jumbotron">
                         <p class="text text-info"><?php echo nl2br( $main_text ); ?></p>
                         <?php
@@ -61,35 +60,76 @@
                                 <?php
                                 $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'] );
                                 if( in_array( $userID, $getAdmins ) ) {
+                                    $_SESSION['isAdmin'] = 1;
                                     $isAdmin = true;
                                 } else {
+                                    $_SESSION['isAdmin'] = 0;
                                     $isAdmin = false;
                                 }
                                 $inEditor = false;
                                 $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'] );
                                 if( !empty( $getSubStreams ) || $isAdmin ) {
+                                    $streamCount = count( $getSubStreams );
                                     if( $isAdmin ) {
                                         ?>
                                         <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and posts displayed on this page.</div>
                                         <?php
                                         if( empty( $getSubStreams ) ) {
-                                            // TODO: Actually setup the damn admin page.
                                             ?>
                                             <div class="alert alert-danger">There are no streamers with the subscription program stored in the database. Please add this via the <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php" class="alert-link">admin page</a>.</div>
                                             <?php
                                         }
                                     }
-                                    $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
-                                    while( !$inEditor && $row = mysqli_fetch_array( $fetchPosts ) ) {
-                                        $postID = $row['id'];
-                                        $postTitle = $row['title'];
-                                        $postText = nl2br( $row['body'] );
-                                        ?>
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading"><?php echo $postTitle; ?></div>
-                                            <div class="panel-body"><?php echo $postText; ?></div>
-                                        </div>
-                                        <?php
+                                    // TODO: Add "You are subscribed" messages for one* and multiple* streamers.
+                                    $isSubbed = false;
+                                    $atError = NULL;
+                                    foreach( $getSubStreams as $name ) {
+                                        if( $Twitch->isSubscribed( $at, $username, $name ) == 100 ) {
+                                            $isSubbed = true;
+                                            break;
+                                        } elseif( $Twitch->isSubscribed( $at, $username, $name ) == 401 ) {
+                                            $atError = '<div class="alert alert-danger">There was an error retrieving subscriber status, please <a href="' . TSA_REDIRECTURL . '/?logout" class="alert-link">logout</a> and connect with Twitch again.</div>';
+                                        }
+                                    }
+                                    // TODO: Add moderator filtering too.
+                                    if( $isSubbed /*|| $isAdmin*/ ) {
+                                        $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
+                                        while( !$inEditor && $row = mysqli_fetch_array( $fetchPosts ) ) {
+                                            $postID = $row['id'];
+                                            $postTitle = $row['title'];
+                                            $postText = nl2br( $row['body'] );
+                                            ?>
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading"><?php echo $postTitle; ?></div>
+                                                <div class="panel-body"><?php echo $postText; ?></div>
+                                            </div>
+                                            <?php
+                                        }
+                                    } else {
+                                        if( $atError ) {
+                                            echo $atError;
+                                        } else {
+                                            $noSubMessage = [];
+                                            if( $streamCount == 1 ) {
+                                                $noSubMessage['u'] = $getSubStreams[0];
+                                                $noSubMessage['msg'] = '.';
+                                            } else {
+                                                $noSubMessage['u'] = 'any of the streamers in the list';
+                                                $noSubMessage['msg'] = ' to at least one of them.';
+                                            }
+                                            ?>
+                                            <div class="alert alert-warning">You are not subscribed to <?php echo $noSubMessage['u']; ?> and will not get access unless you subscribe<?php echo $noSubMessage['msg']; ?></div>
+                                            <div class="list-group">
+                                            <?php
+                                            foreach( $getSubStreams as $name ) {
+                                                ?>
+                                                <a href="http://www.twitch.tv/<?php echo $name; ?>" class="list-group-item list-group-item-success">Subscribe to <?php echo $Twitch->getDisplayNameNoAT( $name ); ?></a>
+                                                <?php
+                                            }
+                                            ?>
+                                            </div>
+                                            <?php
+                                        }
                                     }
                                 } else {
                                     ?>

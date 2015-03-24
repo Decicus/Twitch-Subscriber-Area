@@ -1,4 +1,5 @@
 <?php
+    if( is_file( './finished.txt' ) ) { header( 'Location: ../' ); }
     $TSAURL = ( isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . str_replace(  [ basename( __FILE__ ), 'install/' ], '', $_SERVER['REQUEST_URI'] );
     session_start();
     $_SESSION['TSAURL'] = $TSAURL;

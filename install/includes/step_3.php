@@ -8,7 +8,7 @@
         $twitch_api_key = $_POST['twitch_apikey'];
         $twitch_secret = $_POST['twitch_secret'];
         $twitch_redirect = ( !isset( $_POST['twitch_redirect'] ) || $_POST['twitch_redirect'] == '' ? $_SESSION['TSAURL'] : $_POST['twitch_redirect'] );
-        $db_tblprefix = ( !isset( $_POST['db_tableprefix'] ) || $_POST['db_tableprefix'] == '' ? 'tsa_' : $_POST['db_tableprefix'] );
+        $db_tblprefix = ( !isset( $_POST['db_tableprefix'] ) || str_replace( ' ', '', $_POST['db_tableprefix'] ) == '' ? 'tsa_' : str_replace( ' ', '', preg_replace( '([^A-Z,^0-9,^a-z,^_])', '', $_POST['db_tableprefix'] ) ) ); // Should work for making sure that table prefixes are MySQL-valid.
         $missing = false;
 
         if( $db_user == "" || $db_pass == "" || $db_name == "" || $twitch_api_key == "" || $twitch_secret == "" ) { $missing = true; }
@@ -19,7 +19,7 @@
         if( $twitch_secret == "" ) { echo '<div class="alert alert-danger">Missing Twitch API secret</div>'; }
         if( $missing ) { echo '<a href="install.php?step=2" class="btn btn-warning">Back to step #2</a>'; } else {
             $con = mysqli_connect( $db_host, $db_user, $db_pass, $db_name );
-            if( mysqli_connect_error() ) {
+            if( !$con ) {
                 echo '<div class="alert alert-danger">MySQL Error! <strong>' . mysqli_error( $con ) . '</strong></div>';
             } else {
                 $db_tblprefix = mysqli_real_escape_string( $con, $db_tblprefix );

@@ -6,6 +6,13 @@
         
         <ul class="nav navbar-nav">
             <li <?php echo ( $page == 'index' ? 'class="active"' : '' ); ?>><a href="<?php echo TSA_REDIRECTURL; ?>">Home</a></li>
+            <?php
+                if( isset( $_SESSION['isAdmin'] ) ) {
+                    ?>
+                    <li <?php echo ( $page == 'admin' ? 'class="active"' : '' ); ?>><a href="<?php echo TSA_REDIRECTURL; ?>/admin.php">Admin</a></li>
+                    <?php
+                }
+            ?>
         </ul>
     </div>
 </nav>

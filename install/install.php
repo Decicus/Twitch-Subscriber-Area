@@ -1,3 +1,4 @@
+<?php if( is_file( './finished.txt' ) ) { header( 'Location: ../' ); } ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +10,7 @@
             <div class="page-header"><h1>Twitch Sub Area - Install</h1></div>
             <div class="jumbotron">
                 <?php
-                    error_reporting( E_ALL );
+                    error_reporting( 0 );
                     session_start();
 
                     $_SESSION['step'] = 1;

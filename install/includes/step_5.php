@@ -11,6 +11,7 @@
                 $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
                 $admin = json_encode( [ $userID ] );
                 $query = "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'admins', '$admin' );"; // Setup admin array
+                $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'moderators', '[]' );"; // Empty array for moderators (placeholder).
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'title', 'Twitch Subscriber Area' );"; // Default title
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'main_text', 'Welcome to Twitch Subscriber Area.\nIf you\'re admin, you can modify this text in the admin settings.' );"; // Default description
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'subscriber_streams', '[]' );"; // Empty array for partnered subscriber streams.
@@ -18,7 +19,7 @@
                 if( mysqli_multi_query( $con, $query ) ) {
                     // Ghetto way of verifying installation...
                     $finish = fopen( '.' . DIRECTORY_SEPARATOR . 'finished.txt', 'w' );
-                    fwrite( $finish, 'yep.' );
+                    fwrite( $finish, 'yep.', strlen( 'yep.' ) );
                     fclose( $finish );
                     ?>
                     <div class="alert alert-success">Admin status granted.</div>

@@ -10,6 +10,7 @@
         $twitch_redirect = ( !isset( $_POST['twitch_redirect'] ) || $_POST['twitch_redirect'] == '' ? $_SESSION['TSAURL'] : $_POST['twitch_redirect'] );
         $db_tblprefix = ( !isset( $_POST['db_tableprefix'] ) || str_replace( ' ', '', $_POST['db_tableprefix'] ) == '' ? 'tsa_' : str_replace( ' ', '', preg_replace( '([^A-Z,^0-9,^a-z,^_])', '', $_POST['db_tableprefix'] ) ) ); // Should work for making sure that table prefixes are MySQL-valid.
         $missing = false;
+        $configFile = implode( DIRECTORY_SEPARATOR, array( '..', 'includes', 'config.php' ) );
 
         if( $db_user == "" || $db_pass == "" || $db_name == "" || $twitch_api_key == "" || $twitch_secret == "" ) { $missing = true; }
         if( $db_user == "" ) { echo '<div class="alert alert-danger">Missing MySQL username</div>'; }
@@ -41,9 +42,9 @@
                         $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
                         $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";
                         $config .= "?>";
-                        $conf_File = fopen( '../includes/config.php', 'w' );
-                        fwrite( $conf_File, $config, strlen( $config ) );
-                        fclose( $conf_File );
+                        $confWrite = fopen( $configFile, 'w' );
+                        fwrite( $confWrite, $config, strlen( $config ) );
+                        fclose( $confWrite );
                         ?>
                             <form method="get" action="install.php"><input type="hidden" name="step" value="4" /><button class="btn btn-success">Continue to step #4</button></form>
                         <?php

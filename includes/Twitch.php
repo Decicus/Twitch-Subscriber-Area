@@ -1,19 +1,24 @@
 <?php
 namespace Decicus;
 
-
+/*
+    This is a heavily modified version of another project of mine:
+    https://github.com/The-Blacklist/Twitch-API-PHP
+ */
 class Twitch {
     const API_URL = 'https://api.twitch.tv/kraken/';
     private $API_KEY;
     private $API_SECRET;
     public $REDIRECT_URL;
-
+    
+    // Initiliazes
     public function __construct( $key, $secret, $redirect_url ) {
         $this->API_KEY = $key;
         $this->API_SECRET = $secret;
         $this->REDIRECT_URL = $redirect_url;
     }
-
+    
+    // Generic get() method for communication with the kraken API.
     function get( $url = '', $header = [] ) {
         $header[] = 'Client-ID: ' . $this->API_KEY;
         $curl = curl_init();
@@ -28,12 +33,14 @@ class Twitch {
         return $resp;
     }
     
+    // Returns a formatted authentication URL with the scopes given
     function authenticateURL( $scope = [] ) {
         $s_scope = implode( "+", $scope );
         $url = $this::API_URL . 'oauth2/authorize?response_type=code&client_id=' . $this->API_KEY . '&redirect_uri=' . $this->REDIRECT_URL . '&scope=' . $s_scope;
         return $url;
     }
     
+    // Returns access token after authorizing the application via the URL returned from authenticateURL().
     function getAccessToken( $c ) {
         $curl = curl_init( $this::API_URL . 'oauth2/token' );
         curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1 );
@@ -58,12 +65,13 @@ class Twitch {
         }
     }
 
-    // Only requires username
+    // Returns user ID, which is a unique numeric ID. This should work, even after name changes arrive.
     function getUserID( $name = '' ) {
         $data = $this->get( 'users/' . $name );
         return ( isset( $data['_id'] ) ? $data['_id'] : false );
     }
     
+    // Returns lowercase name
     function getName( $at = '' ) {
         $header = [ 'Authorization: OAuth ' . $at ];
         $data = $this->get( 'user', $header );
@@ -84,6 +92,7 @@ class Twitch {
         return ( isset( $data['_id'] ) ? $data['_id'] : NULL );
     }
     
+    // Gets partner status of $name (channel name).
     function isPartner( $name = '' ) {
         $data = $this->get( 'channels/' . $name );
         return ( isset( $data['error'] ) ? NULL : $data['partner'] );
@@ -100,7 +109,7 @@ class Twitch {
         }
     }
     
-    // Does not require access token, only the name (usually lowercase) itself. - Returns capitalization
+    // Does not require access token, only the name (usually lowercase) itself. See: getDisplayName().
     function getDisplayNameNoAT( $name = '' ) {
         $data = $this->get( 'users/' . $name );
         return ( isset( $data['display_name'] ) ? $data['display_name'] : false );

@@ -10,7 +10,7 @@ The point of this project specifically, is to create something similar for other
 
 # Requirements
 - Apache web server (*Note:* This isn't necessarily a requirement, but it has only been properly tested in Apache environments).
-- PHP 5.5+ (PHP 5.5 was the test version - Earlier versions may work just as fine, but it requires *at least* PHP 5+).
+- PHP 5.5+ (PHP 5.5 was the test version - Earlier versions may work just as fine, but it requires *at least* PHP 5.0).
 - cURL and MySQLi extensions for PHP.
 - A MySQL database.
 - A [Twitch developer application](http://www.twitch.tv/settings/connections) registered with the client ID and client secret (redirect URL will be explained on the installation page).
@@ -29,3 +29,9 @@ Upload the files to your web server, and navigate to it. It should automatically
 
 # License
 This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE), which basically says; "Do what you want, just don't sue me if anything goes wrong."
+
+# Contact
+Bugs/issues should go on the "Issues" page most of the time. Other questions or inquiries can be sent via the following methods:
+- [Twitter (@Decicus)](https://twitter.com/Decicus)
+- [Email (alex@thomassen.xyz)](mailto:alex@thomassen.xyz)
+- [Twitch (Decicus)](http://www.twitch.tv/Decicus)

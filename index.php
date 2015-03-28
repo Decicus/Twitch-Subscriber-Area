@@ -59,12 +59,22 @@
                                 <div class="alert alert-success">Welcome <span class="bold"><?php echo $displayName; ?></span>. You are successfully logged in and fully authenticated.</div>
                                 <?php
                                 $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'] );
+                                $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'] );
                                 if( in_array( $userID, $getAdmins ) ) {
                                     $_SESSION['isAdmin'] = 1;
+                                    $_SESSION['isMod'] = 1; // Admins are automatically "moderators" too.
+                                    $isMod = true;
                                     $isAdmin = true;
                                 } else {
                                     $_SESSION['isAdmin'] = 0;
                                     $isAdmin = false;
+                                    if( in_array( $userID, $getMods ) ) {
+                                        $_SESSION['isMod'] = 1;
+                                        $isMod = true;
+                                    } else {
+                                        $_SESSION['isMod'] = 0;
+                                        $isMod = false;
+                                    }
                                 }
                                 $inEditor = false;
                                 $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'] );
@@ -80,7 +90,6 @@
                                             <?php
                                         }
                                     }
-                                    // TODO: Add "You are subscribed" messages for one* and multiple* streamers.
                                     $isSubbed = false;
                                     $atError = NULL;
                                     foreach( $getSubStreams as $name ) {
@@ -91,8 +100,13 @@
                                             $atError = '<div class="alert alert-danger">There was an error retrieving subscriber status, please <a href="' . TSA_REDIRECTURL . '/?logout" class="alert-link">logout</a> and connect with Twitch again.</div>';
                                         }
                                     }
-                                    // TODO: Add moderator filtering too.
-                                    if( $isSubbed /*|| $isAdmin*/ ) {
+                                    
+                                    if( $isSubbed || $isMod ) {
+                                        if( $isSubbed ) {
+                                            ?>
+                                            <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $getSubStreams[0] : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>
+                                            <?php
+                                        }
                                         $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
                                         while( !$inEditor && $row = mysqli_fetch_array( $fetchPosts ) ) {
                                             $postID = $row['id'];

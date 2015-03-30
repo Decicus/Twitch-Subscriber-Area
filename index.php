@@ -14,7 +14,7 @@
     }
     require 'includes/main.php';
     $page = 'index';
-    
+
     if( $installFinished && !$installExists ) {
         $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
         $title = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='title';" ) )['meta_value'];
@@ -99,7 +99,7 @@
                                             $atError = '<div class="alert alert-danger">There was an error retrieving subscriber status, please <a href="' . TSA_REDIRECTURL . '/?logout" class="alert-link">logout</a> and connect with Twitch again.</div>';
                                         }
                                     }
-                                    
+
                                     if( $isSubbed || $isMod ) {
                                         if( $isSubbed ) {
                                             ?>
@@ -107,7 +107,9 @@
                                             <?php
                                         }
                                         $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
+                                        $hasPosts = false;
                                         while( $row = mysqli_fetch_array( $fetchPosts ) ) {
+                                            $hasPosts = true;
                                             $postID = $row['id'];
                                             $postTitle = $row['title'];
                                             $postText = nl2br( $row['body'] );
@@ -116,6 +118,11 @@
                                                 <div class="panel-heading"><?php echo $postTitle; ?></div>
                                                 <div class="panel-body"><?php echo $postText; ?></div>
                                             </div>
+                                            <?php
+                                        }
+                                        if( !$hasPosts ) {
+                                            ?>
+                                            <div class="alert alert-info">There are no posts :(</div>
                                             <?php
                                         }
                                     } else {

@@ -76,7 +76,6 @@
                                         $isMod = false;
                                     }
                                 }
-                                $inEditor = false;
                                 $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'] );
                                 if( !empty( $getSubStreams ) || $isAdmin ) {
                                     $streamCount = count( $getSubStreams );
@@ -108,7 +107,7 @@
                                             <?php
                                         }
                                         $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
-                                        while( !$inEditor && $row = mysqli_fetch_array( $fetchPosts ) ) {
+                                        while( $row = mysqli_fetch_array( $fetchPosts ) ) {
                                             $postID = $row['id'];
                                             $postTitle = $row['title'];
                                             $postText = nl2br( $row['body'] );

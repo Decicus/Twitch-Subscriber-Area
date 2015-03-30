@@ -38,8 +38,8 @@
     </head>
     <body>
         <?php include 'includes/nav.php'; ?>
-        <div class="page-header"><h1><?php echo $title; ?> - Admin</h1></div>
         <div class="container">
+        <div class="page-header"><h1><?php echo $title; ?> - Admin</h1></div>
             <div class="jumbotron">
                 <p class="text text-info">Welcome to the admin settings of <?php echo $title; ?>. Here you will be able to access page settings.</p>
                 <?php
@@ -49,6 +49,7 @@
                         'title' => 'Change the title of this website',
                         'description' => 'Modify the homepage description'
                     ];
+                    mysqli_close( $con );
                 ?>
                 <a href="<?php echo TSA_REDIRECTURL; ?>/?logout" class="btn btn-danger">Logout</a>
             </div>

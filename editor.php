@@ -17,13 +17,12 @@
     if( !isset( $_SESSION['isMod'] ) || $_SESSION['isMod'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
 
     if( $installFinished && !$installExists ) {
-        $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
-        $title = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='title';" ) )['meta_value'];
-        $main_text = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='main_text';" ) )['meta_value'];
+        require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         // Verify the user is a moderator/admin.
-        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'] );
-        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'] );
-        if( !in_array( $_SESSION['user_id'], $getAdmins ) && !in_array( $_SESSION['user_id'], $getMods ) ) {
+        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
+        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
+        $userID = $_SESSION['user_id'];
+        if( !$getAdmins[ $userID ] && !$getMods[ $userID ] ) {
             $_SESSION['isMod'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.
         }

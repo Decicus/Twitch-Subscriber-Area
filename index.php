@@ -2,6 +2,7 @@
     $installFinished = false;
     $installExists = false;
     $install_dir = './install';
+    error_reporting( 0 );
     if( is_dir( $install_dir ) ) {
         if( is_file( $install_dir . '/finished.txt' ) ) {
             $installFinished = true;
@@ -16,9 +17,7 @@
     $page = 'index';
 
     if( $installFinished && !$installExists ) {
-        $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
-        $title = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='title';" ) )['meta_value'];
-        $main_text = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='main_text';" ) )['meta_value'];
+        require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';-
         if( isset( $_GET['logout'] ) ) {
             session_destroy();
             header( 'Location: ' . TSA_REDIRECTURL );
@@ -58,9 +57,10 @@
                                 ?>
                                 <div class="alert alert-success">Welcome <span class="bold"><?php echo $displayName; ?></span>. You are successfully logged in and fully authenticated.</div>
                                 <?php
-                                $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'] );
-                                $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'] );
-                                if( in_array( $userID, $getAdmins ) ) {
+                                $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
+                                $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
+
+                                if( $getAdmins[ $userID ] ) {
                                     $_SESSION['isAdmin'] = 1;
                                     $_SESSION['isMod'] = 1; // Admins are automatically "moderators" too.
                                     $isMod = true;

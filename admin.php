@@ -17,12 +17,10 @@
     if( !isset( $_SESSION['isAdmin'] ) || $_SESSION['isAdmin'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
 
     if( $installFinished && !$installExists ) {
-        $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
-        $title = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='title';" ) )['meta_value'];
-        $main_text = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='main_text';" ) )['meta_value'];
+        require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         // Verify the user is admin.
-        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'] );
-        if( !in_array( $_SESSION['user_id'], $getAdmins ) ) {
+        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
+        if( !$getAdmins[ $_SESSION['user_id'] ] ) {
             $_SESSION['isAdmin'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.
         }
@@ -43,6 +41,7 @@
             <div class="jumbotron">
                 <p class="text text-info">Welcome to the admin settings of <?php echo $title; ?>. Here you will be able to access page settings.</p>
                 <?php
+                    $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
                     $pages = [
                         'admins' => 'Modify site administrators (full access users).',
                         'moderators' => 'Modify site moderators (only access to add, edit or delete posts).',
@@ -55,6 +54,7 @@
                         require implode( DIRECTORY_SEPARATOR, [ 'includes', 'admin', $currentPage . '.php' ] );
                     }
                     ?>
+                    <div class="container">
                         <div class="list-group">
                     <?php
                         foreach( $pages as $page => $desc ) {
@@ -65,9 +65,11 @@
                         }
                     ?>
                         </div>
+                    </div>
                     <?php
                     mysqli_close( $con );
                 ?>
+                <br />
                 <a href="<?php echo TSA_REDIRECTURL; ?>/?logout" class="btn btn-danger">Logout</a>
             </div>
         </div>

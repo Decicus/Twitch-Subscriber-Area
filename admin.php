@@ -15,7 +15,7 @@
     require 'includes/main.php';
     $page = 'admin';
     if( !isset( $_SESSION['isAdmin'] ) || $_SESSION['isAdmin'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
-    
+
     if( $installFinished && !$installExists ) {
         $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
         $title = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='title';" ) )['meta_value'];
@@ -49,6 +49,23 @@
                         'title' => 'Change the title of this website',
                         'description' => 'Modify the homepage description'
                     ];
+                    $currentPage = "";
+                    if( isset( $_GET['page'] ) && isset( $pages[ $_GET['page'] ] ) ) {
+                        $currentPage = $_GET['page'];
+                        require implode( DIRECTORY_SEPARATOR, [ 'includes', 'admin', $currentPage . '.php' ] );
+                    }
+                    ?>
+                        <div class="list-group">
+                    <?php
+                        foreach( $pages as $page => $desc ) {
+                            $pageName = strtoupper( substr( $page, 0, 1 ) ) . substr( $page, 1 );
+                    ?>
+                            <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php?page=<?php echo $page; ?>" class="list-group-item <?php echo ( $currentPage == $page ? 'active' : '' ); ?>"><strong><?php echo $pageName; ?></strong> &mdash; <?php echo $desc; ?></a>
+                    <?php
+                        }
+                    ?>
+                        </div>
+                    <?php
                     mysqli_close( $con );
                 ?>
                 <a href="<?php echo TSA_REDIRECTURL; ?>/?logout" class="btn btn-danger">Logout</a>

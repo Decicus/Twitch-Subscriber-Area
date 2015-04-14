@@ -26,6 +26,7 @@ Upload the files to your web server, and navigate to it. It should automatically
 # Other notes
 - The design behind this project is based heavily around [Bootstrap](http://getbootstrap.com/), which may be an issue for those who already have an existing website with an existing design they wish to use. I would recommend checking out [Bootswatch](https://bootswatch.com/) if you wish to take a look at some alternative layouts, if you are not able to extract the code from this project into the current design.
 - Connection to the Twitch API is done through a modified version of [another project](https://github.com/Decicus/Twitch-API-PHP) I have.
+- I'm aware this could be done differently and better in hundreds of ways. One day I hope to come back to this project and rewrite it all into more efficient and developer-friendly code as 2.0. Although, that may not happen anytime soon.
 
 # License
 This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE), which basically says; "Do what you want, just don't sue me if anything goes wrong."

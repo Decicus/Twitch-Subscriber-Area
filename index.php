@@ -86,7 +86,7 @@
                                     $streamCount = count( $getSubStreams );
                                     if( $isAdmin ) {
                                         ?>
-                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and modify posts displayed on this page.</div>
+                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and modify posts displayed on this page via the <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php" class="alert-link">admin page</a>.</div>
                                         <?php
                                         if( empty( $getSubStreams ) ) {
                                             ?>

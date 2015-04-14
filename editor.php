@@ -66,18 +66,22 @@
                             }
                         } else {
                             ?>
-                            <form method="post" action="<?php echo TSA_REDIRECTURL; ?>/editor.php?add">
-                                <div class="form-group">
-                                    <label for="postTitle">Post title:</label>
-                                    <input type="text" class="form-control" name="addPostTitle" id="postTitle" placeholder="Title"/>
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Add post:</div>
+                                <div class="panel-body">
+                                    <form method="post" action="<?php echo TSA_REDIRECTURL; ?>/editor.php?add">
+                                        <div class="form-group">
+                                            <label for="postTitle">Post title:</label>
+                                            <input type="text" class="form-control" name="addPostTitle" id="postTitle" placeholder="Title"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="postBody">Post body (main text):</label>
+                                            <textarea class="form-control" name="addPostBody" id="postBody" rows="10" cols="50" placeholder="Main text"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Add post!</button>
+                                    </form>
                                 </div>
-                                <div class="form-group">
-                                    <label for="postBody">Post body (main text):</label>
-                                    <textarea class="form-control" name="addPostBody" id="postBody" rows="10" cols="50" placeholder="Main text"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-success">Add post!</button>
-                            </form>
-                            <br />
+                            </div>
                             <?php
                         }
                         ?>
@@ -106,18 +110,22 @@
                                 }
                             } else {
                                 ?>
-                                <p class="text text-success">Currently editing: "<strong><?php echo $postInfo['title']; ?></strong>"</p>
-                                <form method="post" action="<?php echo TSA_REDIRECTURL; ?>/editor.php?edit=<?php echo $editID; ?>">
-                                    <div class="form-group">
-                                        <label for="postTitle">Post title:</label>
-                                        <input type="text" class="form-control" name="editPostTitle" id="postTitle" value="<?php echo $postInfo['title']; ?>" />
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">Currently editing: "<strong><?php echo $postInfo['title']; ?></strong>"</div>
+                                    <div class="panel-body">
+                                        <form method="post" action="<?php echo TSA_REDIRECTURL; ?>/editor.php?edit=<?php echo $editID; ?>">
+                                            <div class="form-group">
+                                                <label for="postTitle">Post title:</label>
+                                                <input type="text" class="form-control" name="editPostTitle" id="postTitle" value="<?php echo $postInfo['title']; ?>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="postBody">Post body (main text):</label>
+                                                <textarea class="form-control" name="editPostBody" id="postBody" rows="10" cols="50"><?php echo $postInfo['body']; ?></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-success">Edit post!</button>
+                                        </form>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="postBody">Post body (main text):</label>
-                                        <textarea class="form-control" name="editPostBody" id="postBody" rows="10" cols="50"><?php echo $postInfo['body']; ?></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Edit post!</button>
-                                </form>
+                                </div>
                                 <?php
                             }
                         }

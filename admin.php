@@ -39,7 +39,7 @@
         <div class="container">
         <div class="page-header"><h1><?php echo $title; ?> - Admin</h1></div>
             <div class="jumbotron">
-                <p class="text text-info">Welcome to the admin settings of <?php echo $title; ?>. Here you will be able to access page settings.</p>
+                <p class="text text-info">Welcome to the admin settings of <?php echo $title; ?>. Here you will be able to access site-wide settings.</p>
                 <?php
                     $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
                     $pages = [

@@ -24,9 +24,10 @@ Upload the files to your web server, and navigate to it. It should automatically
 - [Twitch (Kraken) API](https://github.com/justintv/Twitch-API)
 
 # Other notes
-- The design behind this project is based heavily around [Bootstrap](http://getbootstrap.com/), which may be an issue for those who already have an existing website with an existing design they wish to use. I would recommend checking out [Bootswatch](https://bootswatch.com/) if you wish to take a look at some alternative layouts, if you are not able to extract the code from this project into the current design.
+- The design behind this project is based heavily around [Bootstrap](http://getbootstrap.com/), which may be an issue for those who already have an existing website with an existing design they wish to use. I would recommend checking out [Bootswatch](https://bootswatch.com/) in case you want to take a look at some alternative layouts, if you are not able to extract the code from this project into the current design. (Take a look at [Themes](#themes) for more info on how you can change the layout)
 - Connection to the Twitch API is done through a modified version of [another project](https://github.com/Decicus/Twitch-API-PHP) I have.
-- I'm aware this could be done differently and better in hundreds of ways. One day I hope to come back to this project and rewrite it all into more efficient and developer-friendly code as 2.0. Although, that may not happen anytime soon.
+- I'm aware this could be done differently and better in hundreds of ways. One day I hope to come back to this project and rewrite it all into more efficient and developer-friendly code as a "2.0". Although, that may not happen anytime soon.
+- Keep in mind this is meant for users that have a domain + web hosting they wish to use. If not, [SubsOnly](https://subsonly.com/) may be a better alternative.
 
 # License
 This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE), which basically says; "Do what you want, just don't sue me if anything goes wrong."
@@ -36,3 +37,11 @@ Bugs/issues should go on the "Issues" page most of the time. Other questions or 
 - [Twitter (@Decicus)](https://twitter.com/Decicus)
 - [Email (alex@thomassen.xyz)](mailto:alex@thomassen.xyz)
 - [Twitch (Decicus)](http://www.twitch.tv/Decicus)
+
+# Themes
+Due to the fact that this is very heavily based around Bootstrap - You might dislike the current theme or think it doesn't fit the current layout of a website you have.  
+The easiest way to get around this, is to visit [Bootswatch](https://bootswatch.com/) and find a theme that fits/you like.
+
+- Click "Download" at the top, and then "bootstrap.min.css". CTRL + A (or 'Select all') this page and copy this.
+- Next, open css/bootstrap.min.css inside your Twitch Subscriber Area folder with Notepad/TextEdit or whatever text editor you may use. Remove everything in that file and paste what you copied earlier.
+- Save, open/refresh the website and it should use the new theme (You may have to refresh multiple times for the new theme to be updated, due to your web browser's cache).

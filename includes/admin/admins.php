@@ -46,7 +46,7 @@
             }
         } else {
             ?>
-            <div class="alert alert-danger">Error retrieving user (user most likely doesn't exist).</div>
+            <div class="alert alert-danger">User is not an admin.</div>
             <?php
         }
     }

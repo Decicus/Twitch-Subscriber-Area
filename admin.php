@@ -20,7 +20,7 @@
         require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         // Verify the user is admin.
         $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
-        if( !$getAdmins[ $_SESSION['user_id'] ] ) {
+        if( !isset( $getAdmins[ $_SESSION['user_id'] ] ) ) {
             $_SESSION['isAdmin'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.
         }
@@ -44,7 +44,7 @@
                     $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
                     $pages = [
                         'admins' => 'Modify site administrators (full access users).',
-                        'moderators' => 'Modify site moderators (only access to add, edit or delete posts).',
+                        'moderators' => 'Modify site moderators (only access to add, edit or delete posts). Will naturally have access to see the posts as well.',
                         'title' => 'Change the title of this website',
                         'description' => 'Modify the homepage description'
                     ];

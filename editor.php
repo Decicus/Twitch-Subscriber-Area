@@ -22,7 +22,7 @@
         $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
         $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
         $userID = $_SESSION['user_id'];
-        if( !$getAdmins[ $userID ] && !$getMods[ $userID ] ) {
+        if( !isset( $getAdmins[ $userID ] ) && !isset( $getMods[ $userID ] ) ) {
             $_SESSION['isMod'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.
         }

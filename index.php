@@ -17,7 +17,7 @@
     $page = 'index';
 
     if( $installFinished && !$installExists ) {
-        require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';-
+        require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         if( isset( $_GET['logout'] ) ) {
             session_destroy();
             header( 'Location: ' . TSA_REDIRECTURL );
@@ -65,6 +65,11 @@
                                     $_SESSION['isMod'] = 1; // Admins are automatically "moderators" too.
                                     $isMod = true;
                                     $isAdmin = true;
+                                } elseif( $getMods[ $userID ] ) {
+                                    $_SESSION['isAdmin'] = 0;
+                                    $_SESSION['isMod'] = 1;
+                                    $isMod = true;
+                                    $isAdmin = false;
                                 } else {
                                     $_SESSION['isAdmin'] = 0;
                                     $isAdmin = false;
@@ -77,17 +82,21 @@
                                     }
                                 }
                                 $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'] );
-                                if( !empty( $getSubStreams ) || $isAdmin ) {
+                                if( !empty( $getSubStreams ) || $isAdmin || $isMod ) {
                                     $streamCount = count( $getSubStreams );
                                     if( $isAdmin ) {
                                         ?>
-                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and posts displayed on this page.</div>
+                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and modify posts displayed on this page.</div>
                                         <?php
                                         if( empty( $getSubStreams ) ) {
                                             ?>
                                             <div class="alert alert-danger">There are no streamers with the subscription program stored in the database. Please add this via the <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php" class="alert-link">admin page</a>.</div>
                                             <?php
                                         }
+                                    } elseif( $isMod ) {
+                                        ?>
+                                        <div class="alert alert-info">You are a <span class="bold">moderator</span>. This means you can modify site posts displayed on this page via the <a href="<?php echo TSA_REDIRECTURL; ?>/editor.php" class="alert-link">editor</a>.</div>
+                                        <?php
                                     }
                                     $isSubbed = false;
                                     $atError = NULL;

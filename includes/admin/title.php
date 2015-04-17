@@ -1,5 +1,5 @@
 <?php
-    if( isset( $_POST['pageTitle'] ) && !empty( $_POST['pageTitle'] ) ) {
+    if( !empty( $_POST['pageTitle'] ) ) {
         $newTitle = mysqli_real_escape_string( $con, $_POST['pageTitle'] );
         $newTitleQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $newTitle . "' WHERE meta_key='title';";
         if( !mysqli_query( $con, $newTitleQuery ) ) {

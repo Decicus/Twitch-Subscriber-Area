@@ -4,7 +4,7 @@ namespace Decicus;
 /*
     This is a heavily modified version of another project of mine:
     https://github.com/The-Blacklist/Twitch-API-PHP
- */
+*/
 class Twitch {
     const API_URL = 'https://api.twitch.tv/kraken/';
     private $API_KEY;

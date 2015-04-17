@@ -1,6 +1,6 @@
 <?php
-    $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
-    if( isset( $_POST['addMod'] ) && !empty( $_POST['addMod'] ) ) {
+    $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) )['meta_value'], true );
+    if( !empty( $_POST['addMod'] ) ) {
         $newModName = mysqli_real_escape_string( $con, $_POST['addMod'] );
         $newModUID = $Twitch->getUserID( $newModName );
         if( $newModUID ) {
@@ -29,7 +29,7 @@
         }
     }
 
-    if( isset( $_POST['delMod'] ) && !empty( $_POST['delMod'] ) ) {
+    if( !empty( $_POST['delMod'] ) ) {
         $delModUID = $_POST['delMod'];
         if( isset( $getMods[ $delModUID ] ) ) {
             $delModName = $getMods[ $delModUID ][ 'name' ];
@@ -82,7 +82,7 @@
                     ?>
                 </select>
             </div>
-            <button type="submit" class="btn btn-danger" onclick='confirm( "Are you sure you want to remove this moderator?" );' )>Remove admin</button>
+            <button type="submit" class="btn btn-danger" onclick='confirm( "Are you sure you want to remove this moderator?" );' )>Remove moderator</button>
         </form>
     </div>
 </div>

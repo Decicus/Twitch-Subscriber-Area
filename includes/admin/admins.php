@@ -1,5 +1,5 @@
 <?php
-    if( isset( $_POST['addAdmin'] ) && !empty( $_POST['addAdmin'] ) ) {
+    if( !empty( $_POST['addAdmin'] ) ) {
         $newAdminName = mysqli_real_escape_string( $con, $_POST['addAdmin'] );
         $newAdminUID = $Twitch->getUserID( $newAdminName );
         if( $newAdminUID ) {
@@ -28,7 +28,7 @@
         }
     }
 
-    if( isset( $_POST['delAdmin'] ) && !empty( $_POST['delAdmin'] ) ) {
+    if( !empty( $_POST['delAdmin'] ) ) {
         $delAdminUID = $_POST['delAdmin'];
         if( isset( $getAdmins[ $delAdminUID ] ) ) {
             $delAdminName = $getAdmins[ $delAdminUID ][ 'name' ];

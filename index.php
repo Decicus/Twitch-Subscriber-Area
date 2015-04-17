@@ -25,6 +25,37 @@
     } else {
         $title = 'Twitch Subscriber Area';
     }
+    
+    if( isset( $_SESSION['access_token'] ) ) {
+        $at = $_SESSION['access_token'];
+        $username = $_SESSION['username'];
+        $displayName = $_SESSION['display_name'];
+        $userID = $_SESSION['user_id'];
+        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) )['meta_value'], true );
+        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) )['meta_value'], true );
+
+        if( isset( $getAdmins[ $userID ] ) ) {
+            $_SESSION['isAdmin'] = 1;
+            $_SESSION['isMod'] = 1; // Admins are automatically "moderators" too.
+            $isMod = true;
+            $isAdmin = true;
+        } elseif( isset( $getMods[ $userID ] ) ) {
+            $_SESSION['isAdmin'] = 0;
+            $_SESSION['isMod'] = 1;
+            $isMod = true;
+            $isAdmin = false;
+        } else {
+            $_SESSION['isAdmin'] = 0;
+            $isAdmin = false;
+            if( in_array( $userID, $getMods ) ) {
+                $_SESSION['isMod'] = 1;
+                $isMod = true;
+            } else {
+                $_SESSION['isMod'] = 0;
+                $isMod = false;
+            }
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,43 +81,15 @@
                         <p class="text text-info"><?php echo nl2br( $main_text ); ?></p>
                         <?php
                             if( isset( $_SESSION['access_token'] ) ) {
-                                $at = $_SESSION['access_token'];
-                                $username = $_SESSION['username'];
-                                $displayName = $_SESSION['display_name'];
-                                $userID = $_SESSION['user_id'];
                                 ?>
                                 <div class="alert alert-success">Welcome <span class="bold"><?php echo $displayName; ?></span>. You are successfully logged in and fully authenticated.</div>
                                 <?php
-                                $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
-                                $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
-
-                                if( $getAdmins[ $userID ] ) {
-                                    $_SESSION['isAdmin'] = 1;
-                                    $_SESSION['isMod'] = 1; // Admins are automatically "moderators" too.
-                                    $isMod = true;
-                                    $isAdmin = true;
-                                } elseif( $getMods[ $userID ] ) {
-                                    $_SESSION['isAdmin'] = 0;
-                                    $_SESSION['isMod'] = 1;
-                                    $isMod = true;
-                                    $isAdmin = false;
-                                } else {
-                                    $_SESSION['isAdmin'] = 0;
-                                    $isAdmin = false;
-                                    if( in_array( $userID, $getMods ) ) {
-                                        $_SESSION['isMod'] = 1;
-                                        $isMod = true;
-                                    } else {
-                                        $_SESSION['isMod'] = 0;
-                                        $isMod = false;
-                                    }
-                                }
-                                $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'] );
+                                $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'], true );
                                 if( !empty( $getSubStreams ) || $isAdmin || $isMod ) {
                                     $streamCount = count( $getSubStreams );
                                     if( $isAdmin ) {
                                         ?>
-                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and modify posts displayed on this page via the <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php" class="alert-link">admin page</a>.</div>
+                                        <div class="alert alert-info">You are an <span class="bold">admin</span>. This means you can edit site settings and modify posts displayed on this page via the <a href="<?php echo TSA_REDIRECTURL; ?>/admin.php" class="alert-link">admin page</a> and the <a href="<?php echo TSA_REDIRECTURL; ?>/editor.php" class="alert-link">page editor</a>.</div>
                                         <?php
                                         if( empty( $getSubStreams ) ) {
                                             ?>
@@ -100,7 +103,8 @@
                                     }
                                     $isSubbed = false;
                                     $atError = NULL;
-                                    foreach( $getSubStreams as $name ) {
+                                    foreach( $getSubStreams as $UID => $info ) {
+                                        $name = $info[ 'name' ];
                                         if( $Twitch->isSubscribed( $at, $username, $name ) == 100 ) {
                                             $isSubbed = true;
                                             break;
@@ -110,9 +114,10 @@
                                     }
 
                                     if( $isSubbed || $isMod ) {
+                                        $firstStreamer = $getSubStreams[ array_keys( $getSubStreams )[ 0 ] ][ 'name' ];
                                         if( $isSubbed ) {
                                             ?>
-                                            <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $getSubStreams[0] : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>
+                                            <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $firstStreamer : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>
                                             <?php
                                         }
                                         $fetchPosts = mysqli_query( $con, "SELECT id, title, body FROM " . TSA_DB_PREFIX . "posts;" );
@@ -131,7 +136,7 @@
                                         }
                                         if( !$hasPosts ) {
                                             ?>
-                                            <div class="alert alert-info">There are no posts :(</div>
+                                            <div class="alert alert-warning">There are no posts :(</div>
                                             <?php
                                         }
                                     } else {
@@ -140,7 +145,7 @@
                                         } else {
                                             $noSubMessage = [];
                                             if( $streamCount == 1 ) {
-                                                $noSubMessage['u'] = $getSubStreams[0];
+                                                $noSubMessage['u'] = $firstStreamer;
                                                 $noSubMessage['msg'] = '.';
                                             } else {
                                                 $noSubMessage['u'] = 'any of the streamers in the list';
@@ -150,7 +155,8 @@
                                             <div class="alert alert-warning">You are not subscribed to <?php echo $noSubMessage['u']; ?> and will not get access unless you subscribe<?php echo $noSubMessage['msg']; ?></div>
                                             <div class="list-group">
                                             <?php
-                                            foreach( $getSubStreams as $name ) {
+                                            foreach( $getSubStreams as $UID => $info ) {
+                                                $name = $info[ 'name' ];
                                                 ?>
                                                 <a href="http://www.twitch.tv/<?php echo $name; ?>" class="list-group-item list-group-item-success">Subscribe to <?php echo $Twitch->getDisplayNameNoAT( $name ); ?></a>
                                                 <?php

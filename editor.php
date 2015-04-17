@@ -19,12 +19,13 @@
     if( $installFinished && !$installExists ) {
         require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         // Verify the user is a moderator/admin.
-        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators';" ) )['meta_value'], true );
-        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins';" ) )['meta_value'], true );
+        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) )['meta_value'], true );
+        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) )['meta_value'], true );
         $userID = $_SESSION['user_id'];
         if( !isset( $getAdmins[ $userID ] ) && !isset( $getMods[ $userID ] ) ) {
             $_SESSION['isMod'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.
+            exit();
         }
     } else {
         $title = 'Twitch Subscriber Area';

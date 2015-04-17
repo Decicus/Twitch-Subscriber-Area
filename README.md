@@ -20,7 +20,10 @@ Before installation, it's recommended to have a MySQL database ready with the in
 Upload the files to your web server, and navigate to it. It should automatically redirect you to the install page.
 
 # Credits
-- [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery.com/) - Licenses: [Bootstrap License (MIT License)](https://github.com/twbs/bootstrap/blob/master/LICENSE) - [jQuery License (MIT License)](https://jquery.org/license/)
+- [Bootstrap](http://getbootstrap.com/)
+    - License: [Bootstrap License (MIT License)](https://github.com/twbs/bootstrap/blob/master/LICENSE)
+- [jQuery](https://jquery.com/)
+    - License: [jQuery License (MIT License)](https://jquery.org/license/)
 - [Twitch (Kraken) API](https://github.com/justintv/Twitch-API)
 
 # Other notes

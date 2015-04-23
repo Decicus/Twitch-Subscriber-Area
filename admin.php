@@ -1,17 +1,5 @@
 <?php
-    $installFinished = false;
-    $installExists = false;
-    $install_dir = './install';
-    if( is_dir( $install_dir ) ) {
-        if( is_file( $install_dir . '/finished.txt' ) ) {
-            $installFinished = true;
-            $installExists = true;
-        } else {
-            header( 'Location: ' . $install_dir );
-        }
-    } else {
-        $installFinished = true;
-    }
+    require 'includes/check_install.php';
     require 'includes/main.php';
     $page = 'admin';
     if( !isset( $_SESSION['isAdmin'] ) || $_SESSION['isAdmin'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
@@ -54,7 +42,7 @@
                     $currentPage = "";
                     if( isset( $_GET['page'] ) && isset( $pages[ $_GET['page'] ] ) ) {
                         $currentPage = $_GET['page'];
-                        require implode( DIRECTORY_SEPARATOR, [ 'includes', 'admin', $currentPage . '.php' ] );
+                        require implode( DIRECTORY_SEPARATOR, array( 'includes', 'admin', $currentPage . '.php' ) );
                     }
                     ?>
                     <div class="container">

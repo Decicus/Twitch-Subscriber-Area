@@ -1,5 +1,4 @@
 <?php
-    if( is_file( './finished.txt' ) ) { header( 'Location: ../' ); }
     $TSAURL = ( isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . str_replace( array( basename( __FILE__ ), 'install/' ), '', $_SERVER['REQUEST_URI'] );
     $TSAURL = ( strpos( $TSAURL, '/', strlen( $TSAURL ) - 1 ) ? substr( $TSAURL, 0, -1 ) : $TSAURL ); // Remove '/' at the end of a URL.
     session_start();
@@ -15,6 +14,7 @@
         <div class="container">
             <div class="page-header"><h1>Twitch Sub Area - Install</h1></div>
             <div class="jumbotron">
+                <?php if( is_file( implode( DIRECTORY_SEPARATOR, array( '..', 'includes', 'config.php' ) ) ) ) { ?><div class="alert alert-warning">Configuration file exists. If the installation is finished and working, you should delete this directory.</div><?php } ?>
                 <h2>Hello and welcome!</h2>
                 <p class="text text-default">This is the install script for the Twitch Subscriber Area.</p>
                 <p class="text text-default">The main point of this project is to be able to setup a simple, yet powerful subscriber area for one or more partnered streamers with a "Subscribe" button.<br />

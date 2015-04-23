@@ -1,17 +1,5 @@
 <?php
-    $installFinished = false;
-    $installExists = false;
-    $install_dir = './install';
-    if( is_dir( $install_dir ) ) {
-        if( is_file( $install_dir . '/finished.txt' ) ) {
-            $installFinished = true;
-            $installExists = true;
-        } else {
-            header( 'Location: ' . $install_dir );
-        }
-    } else {
-        $installFinished = true;
-    }
+    require 'includes/check_install.php';
     require 'includes/main.php';
     $page = 'editor';
     if( !isset( $_SESSION['isMod'] ) || $_SESSION['isMod'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }

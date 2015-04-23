@@ -19,6 +19,7 @@ The point of this project specifically, is to create something similar for other
 - Before installation, it's recommended to have a MySQL database ready with the information, as well as your Twitch developer application info (client ID + client secret).  
 - Upload the files to your web server.
     - Make sure the web server user has the correct permissions to the folder and the sub-folders to create a config file (only necessary if you get an error saying "Cannot create config...").
+        - The folder it requires permission to, is the main directorys "includes" folder.
     - Navigate to the directory you uploaded the files to. It should automatically redirect you to the install page.
 
 # Credits

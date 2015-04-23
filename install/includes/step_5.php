@@ -18,10 +18,6 @@
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'subscriber_streams', '[]' );"; // Empty array for partnered subscriber streams.
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "posts( title, body ) VALUES( 'Post example #1', 'This is a sample post, which will be displayed for subscribed users.\nYou can create more of these or edit/delete this one as an admin or moderator in the page editor.' );"; // Sample post
                 if( mysqli_multi_query( $con, $query ) ) {
-                    // Ghetto way of verifying installation...
-                    $finish = fopen( '.' . DIRECTORY_SEPARATOR . 'finished.txt', 'w' );
-                    fwrite( $finish, 'yep.', strlen( 'yep.' ) );
-                    fclose( $finish );
                     ?>
                     <div class="alert alert-success">Admin status granted.</div>
                     <p text="text text-success">Clicking the button below will redirect you to the homepage. Please delete the "install" folder from the directory.</p>

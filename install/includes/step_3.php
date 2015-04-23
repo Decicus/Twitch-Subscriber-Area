@@ -23,36 +23,41 @@
             if( !$con ) {
                 echo '<div class="alert alert-danger">MySQL Error! <strong>' . mysqli_error( $con ) . '</strong></div>';
             } else {
-                $db_tblprefix = mysqli_real_escape_string( $con, $db_tblprefix );
-                $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "posts( id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), title varchar(255), body text)" );
-                if( $result ) {
-                    echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'posts" table.</div>';
-                    $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "settings( setting_id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(setting_id), meta_key varchar(64) UNIQUE, meta_value mediumtext)" );
+                if( is_writeable( $configFile ) ) {
+                    $config = "<?php \n";
+                    $config .= "    // MySQL database information\n";
+                    $config .= "    define( 'TSA_DB_HOST', '" . $db_host . "' );\n";
+                    $config .= "    define( 'TSA_DB_USER', '" . $db_user . "' );\n";
+                    $config .= "    define( 'TSA_DB_PASS', '" . $db_pass . "' );\n";
+                    $config .= "    define( 'TSA_DB_NAME', '" . $db_name . "' );\n";
+                    $config .= "    define( 'TSA_DB_PREFIX', '" . $db_tblprefix . "' );\n\n";
+                    $config .= "    // Twitch API stuff\n";
+                    $config .= "    define( 'TSA_APIKEY', '" . $twitch_api_key . "' );\n";
+                    $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
+                    $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";
+                    $confWrite = fopen( $configFile, 'w' ) or die( 'Cannot create config file. Please make sure the web server user has the correct permissions.' );
+                    fwrite( $confWrite, $config, strlen( $config ) );
+                    fclose( $confWrite );
+                    $db_tblprefix = mysqli_real_escape_string( $con, $db_tblprefix );
+                    $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "posts( id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), title varchar(255), body text)" );
                     if( $result ) {
-                        echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'settings" table.</div>';
-                        $config = "<?php \n";
-                        $config .= "    // MySQL database information\n";
-                        $config .= "    define( 'TSA_DB_HOST', '" . $db_host . "' );\n";
-                        $config .= "    define( 'TSA_DB_USER', '" . $db_user . "' );\n";
-                        $config .= "    define( 'TSA_DB_PASS', '" . $db_pass . "' );\n";
-                        $config .= "    define( 'TSA_DB_NAME', '" . $db_name . "' );\n";
-                        $config .= "    define( 'TSA_DB_PREFIX', '" . $db_tblprefix . "' );\n\n";
-                        $config .= "    // Twitch API stuff\n";
-                        $config .= "    define( 'TSA_APIKEY', '" . $twitch_api_key . "' );\n";
-                        $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
-                        $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";
-                        $config .= "?>";
-                        $confWrite = fopen( $configFile, 'w' ) or die( 'Cannot create config file. Please make sure the web server user has the correct permissions.' );
-                        fwrite( $confWrite, $config, strlen( $config ) );
-                        fclose( $confWrite );
-                        ?>
-                            <form method="get" action="install.php"><input type="hidden" name="step" value="4" /><button class="btn btn-success">Continue to step #4</button></form>
-                        <?php
+                        echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'posts" table.</div>';
+                        $result = mysqli_query( $con, "CREATE TABLE " . $db_tblprefix . "settings( setting_id int NOT NULL AUTO_INCREMENT, PRIMARY KEY(setting_id), meta_key varchar(64) UNIQUE, meta_value mediumtext)" );
+                        if( $result ) {
+                            echo '<div class="alert alert-success">Created "' . $db_tblprefix . 'settings" table.</div>';
+                            ?>
+                                <form method="get" action="install.php"><input type="hidden" name="step" value="4" /><button class="btn btn-success">Continue to step #4</button></form>
+                            <?php
+                        } else {
+                            echo '<div class="alert alert-danger">' . mysqli_error( $con ) . '</div>';
+                        }
                     } else {
                         echo '<div class="alert alert-danger">' . mysqli_error( $con ) . '</div>';
                     }
                 } else {
-                    echo '<div class="alert alert-danger">' . mysqli_error( $con ) . '</div>';
+                    ?>
+                    <div class="alert alert-danger">Unable to write configuration file in 'includes' folder of the base directory.</div>
+                    <?php
                 }
             }
             mysqli_close( $con );

@@ -25,7 +25,7 @@
     } else {
         $title = 'Twitch Subscriber Area';
     }
-    
+
     if( isset( $_SESSION['access_token'] ) ) {
         $at = $_SESSION['access_token'];
         $username = $_SESSION['username'];
@@ -113,8 +113,8 @@
                                         }
                                     }
 
+                                    $firstStreamer = $getSubStreams[ array_keys( $getSubStreams )[ 0 ] ][ 'name' ];
                                     if( $isSubbed || $isMod ) {
-                                        $firstStreamer = $getSubStreams[ array_keys( $getSubStreams )[ 0 ] ][ 'name' ];
                                         if( $isSubbed ) {
                                             ?>
                                             <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $firstStreamer : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>

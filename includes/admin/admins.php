@@ -30,23 +30,29 @@
 
     if( !empty( $_POST['delAdmin'] ) ) {
         $delAdminUID = $_POST['delAdmin'];
-        if( isset( $getAdmins[ $delAdminUID ] ) ) {
-            $delAdminName = $getAdmins[ $delAdminUID ][ 'name' ];
-            unset( $getAdmins[ $delAdminUID ] );
-            $delAdminArray = json_encode( $getAdmins );
-            $delAdminQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $delAdminArray . "' WHERE meta_key='admins';";
-            if( !mysqli_query( $con, $delAdminQuery ) ) {
-                ?>
-                <div class="alert alert-danger">MySQL error: <?php echo mysqli_error( $con ); ?></div>
-                <?php
+        if( count( $getAdmins ) > 1 ) {
+            if( isset( $getAdmins[ $delAdminUID ] ) ) {
+                $delAdminName = $getAdmins[ $delAdminUID ][ 'name' ];
+                unset( $getAdmins[ $delAdminUID ] );
+                $delAdminArray = json_encode( $getAdmins );
+                $delAdminQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $delAdminArray . "' WHERE meta_key='admins';";
+                if( !mysqli_query( $con, $delAdminQuery ) ) {
+                    ?>
+                    <div class="alert alert-danger">MySQL error: <?php echo mysqli_error( $con ); ?></div>
+                    <?php
+                } else {
+                    ?>
+                    <div class="alert alert-success">Success! <strong><?php echo $delAdminName; ?></strong> has been successfully removed as an admin.</div>
+                    <?php
+                }
             } else {
                 ?>
-                <div class="alert alert-success">Success! <strong><?php echo $delAdminName; ?></strong> has been successfully removed as an admin.</div>
+                <div class="alert alert-danger">User is not an admin.</div>
                 <?php
             }
         } else {
             ?>
-            <div class="alert alert-danger">User is not an admin.</div>
+            <div class="alert alert-danger">Since you are the only admin, deleting yourself is not allowed.</div>
             <?php
         }
     }

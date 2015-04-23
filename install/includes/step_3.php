@@ -19,7 +19,7 @@
         if( $twitch_api_key == "" ) { echo '<div class="alert alert-danger">Missing Twitch API key</div>'; }
         if( $twitch_secret == "" ) { echo '<div class="alert alert-danger">Missing Twitch API secret</div>'; }
         if( $missing ) { echo '<a href="install.php?step=2" class="btn btn-warning">Back to step #2</a>'; } else {
-            $con = mysqli_connect( $db_host, $db_user, $db_pass, $db_name );
+            $con = mysqli_connect( $db_host, $db_user, $db_pass, $db_name ) or die( 'Error connecting to database.' );
             if( !$con ) {
                 echo '<div class="alert alert-danger">MySQL Error! <strong>' . mysqli_error( $con ) . '</strong></div>';
             } else {
@@ -42,7 +42,7 @@
                         $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
                         $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";
                         $config .= "?>";
-                        $confWrite = fopen( $configFile, 'w' );
+                        $confWrite = fopen( $configFile, 'w' ) or die( 'Cannot create config file. Please make sure the web server user has the correct permissions.' );
                         fwrite( $confWrite, $config, strlen( $config ) );
                         fclose( $confWrite );
                         ?>

@@ -8,7 +8,7 @@
             $twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
             $userID = $twitch->getUserID( $_POST['admin_username'] );
             if( $userID ) {
-                $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME );
+                $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME ) or die( 'Error connecting to database.' );
                 $adminUserInfo = [ $userID => [ 'name' => $_POST[ 'admin_username' ] ] ];
                 $admin = json_encode( $adminUserInfo ); // As there is no way to lookup user IDs in the Twitch API (for now), this will have to do.
                 $query = "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'admins', '$admin' );"; // Setup admin array
@@ -25,7 +25,7 @@
                     ?>
                     <div class="alert alert-success">Admin status granted.</div>
                     <p text="text text-success">Clicking the button below will redirect you to the homepage. Please delete the "install" folder from the directory.</p>
-                    <a href="/" class="btn btn-success">Finish installation and redirect to homepage.</a>
+                    <a href="<?php echo $_SESSION['TSAURL']; ?>" class="btn btn-success">Finish installation and redirect to homepage.</a>
                     <?php
                 } else {
                     ?>

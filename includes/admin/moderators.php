@@ -1,5 +1,6 @@
 <?php
-    $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) )['meta_value'], true );
+    $fetchMods = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) );
+    $getMods = json_decode( $fetchMods['meta_value'], true );
     if( !empty( $_POST['addMod'] ) ) {
         $newModName = mysqli_real_escape_string( $con, $_POST['addMod'] );
         $newModUID = $Twitch->getUserID( $newModName );

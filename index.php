@@ -31,8 +31,10 @@
         $username = $_SESSION['username'];
         $displayName = $_SESSION['display_name'];
         $userID = $_SESSION['user_id'];
-        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) )['meta_value'], true );
-        $getMods = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) )['meta_value'], true );
+        $fetchAdmins = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) );
+        $getAdmins = json_decode( $fetchAdmins['meta_value'], true );
+        $fetchMods = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) );
+        $getMods = json_decode( $fetchMods['meta_value'], true );
 
         if( isset( $getAdmins[ $userID ] ) ) {
             $_SESSION['isAdmin'] = 1;

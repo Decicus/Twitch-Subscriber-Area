@@ -19,7 +19,8 @@
     if( $installFinished && !$installExists ) {
         require 'includes' . DIRECTORY_SEPARATOR . 'install_finish_db.php';
         // Verify the user is admin.
-        $getAdmins = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) )['meta_value'], true );
+        $fetchAdmins = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='admins' LIMIT 1;" ) );
+        $getAdmins = json_decode( $fetchAdmins['meta_value'], true );
         if( !isset( $getAdmins[ $_SESSION['user_id'] ] ) ) {
             $_SESSION['isAdmin'] = 0;
             header( 'Location: ' . TSA_REDIRECTURL ); // Redirect back to homepage, because at this point they should not have access.

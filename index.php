@@ -115,7 +115,7 @@
                                             $atError = '<div class="alert alert-danger">There was an error retrieving subscriber status, please <a href="' . TSA_REDIRECTURL . '/?logout" class="alert-link">logout</a> and connect with Twitch again.</div>';
                                         }
                                     }
-                                    $firstStreamerKey = array_keys( $getSubStreams )
+                                    $firstStreamerKey = array_keys( $getSubStreams );
                                     $firstStreamer = $getSubStreams[ $firstStreamerKey[ 0 ] ][ 'name' ];
                                     if( $isSubbed || $isMod ) {
                                         if( $isSubbed ) {

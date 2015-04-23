@@ -76,7 +76,7 @@
                 <?php
                     } else {
                     $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
-                    $authenticateURL = $Twitch->authenticateURL( [ 'user_read', 'user_subscriptions' ] );
+                    $authenticateURL = $Twitch->authenticateURL( array( 'user_read', 'user_subscriptions' ) );
                 ?>
                     <div class="page-header"><h1><?php echo $title; ?> - Home</h1></div>
                     <div class="jumbotron">
@@ -114,8 +114,8 @@
                                             $atError = '<div class="alert alert-danger">There was an error retrieving subscriber status, please <a href="' . TSA_REDIRECTURL . '/?logout" class="alert-link">logout</a> and connect with Twitch again.</div>';
                                         }
                                     }
-
-                                    $firstStreamer = $getSubStreams[ array_keys( $getSubStreams )[ 0 ] ][ 'name' ];
+                                    $firstStreamerKey = array_keys( $getSubStreams )
+                                    $firstStreamer = $getSubStreams[ $firstStreamerKey[ 0 ] ][ 'name' ];
                                     if( $isSubbed || $isMod ) {
                                         if( $isSubbed ) {
                                             ?>

@@ -4,7 +4,7 @@
         $newAdminUID = $Twitch->getUserID( $newAdminName );
         if( $newAdminUID ) {
             if( !isset( $getAdmins[ $newAdminUID ] ) ) {
-                $getAdmins[ $newAdminUID ] = [ 'name' => $newAdminName ];
+                $getAdmins[ $newAdminUID ] = array( 'name' => $newAdminName );
                 $newAdminArray = json_encode( $getAdmins );
                 $addAdminQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $newAdminArray . "' WHERE meta_key='admins';";
                 if( !mysqli_query( $con, $addAdminQuery ) ) {

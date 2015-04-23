@@ -143,7 +143,7 @@
                                         if( $atError ) {
                                             echo $atError;
                                         } else {
-                                            $noSubMessage = [];
+                                            $noSubMessage = array();
                                             if( $streamCount == 1 ) {
                                                 $noSubMessage['u'] = $firstStreamer;
                                                 $noSubMessage['msg'] = '.';

@@ -43,13 +43,13 @@
                 <p class="text text-info">Welcome to the admin settings of <?php echo $title; ?>. Here you will be able to access site-wide settings.</p>
                 <?php
                     $Twitch = new Decicus\Twitch( TSA_APIKEY, TSA_APISECRET, TSA_REDIRECTURL );
-                    $pages = [
+                    $pages = array(
                         'admins' => 'Modify site administrators (full access users).',
                         'moderators' => 'Modify site moderators (only access to add, edit or delete posts). Will naturally have access to see the posts as well.',
                         'title' => 'Change the title of this website.',
                         'description' => 'Modify the homepage description.',
                         'streamers' => 'Modify the list of partnered streamers supported on this site.'
-                    ];
+                    );
                     $currentPage = "";
                     if( isset( $_GET['page'] ) && isset( $pages[ $_GET['page'] ] ) ) {
                         $currentPage = $_GET['page'];

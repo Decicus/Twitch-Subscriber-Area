@@ -9,7 +9,7 @@
             $userID = $twitch->getUserID( $_POST['admin_username'] );
             if( $userID ) {
                 $con = mysqli_connect( TSA_DB_HOST, TSA_DB_USER, TSA_DB_PASS, TSA_DB_NAME ) or die( 'Error connecting to database.' );
-                $adminUserInfo = [ $userID => [ 'name' => $_POST[ 'admin_username' ] ] ];
+                $adminUserInfo = array( $userID => array( 'name' => $_POST[ 'admin_username' ] ) );
                 $admin = json_encode( $adminUserInfo ); // As there is no way to lookup user IDs in the Twitch API (for now), this will have to do.
                 $query = "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'admins', '$admin' );"; // Setup admin array
                 $query .= "INSERT INTO " . TSA_DB_PREFIX . "settings( meta_key, meta_value ) VALUES( 'moderators', '[]' );"; // Empty array for moderators (placeholder).

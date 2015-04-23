@@ -5,7 +5,7 @@
         $newModUID = $Twitch->getUserID( $newModName );
         if( $newModUID ) {
             if( !isset( $getMods[ $newModUID ] ) ) {
-                $getMods[ $newModUID ] = [ 'name' => $newModName ];
+                $getMods[ $newModUID ] = array( 'name' => $newModName );
                 $newModArray = json_encode( $getMods );
                 $addModQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $newModArray . "' WHERE meta_key='moderators';";
                 if( !mysqli_query( $con, $addModQuery ) ) {

@@ -16,8 +16,10 @@ The point of this project specifically, is to create something similar for other
 - A [Twitch developer application](http://www.twitch.tv/settings/connections) registered with the client ID and client secret (redirect URL will be explained on the installation page).
 
 # Installation
-Before installation, it's recommended to have a MySQL database ready with the information, as well as your Twitch developer application info (client ID + client secret).  
-Upload the files to your web server, make sure the web server user has the correct permissions to the folder and the sub-folders to create a config file (only necessary if you get an error saying "Cannot create config...") and navigate to the directory you uploaded the files to. It should automatically redirect you to the install page.
+- Before installation, it's recommended to have a MySQL database ready with the information, as well as your Twitch developer application info (client ID + client secret).  
+- Upload the files to your web server.
+    - Make sure the web server user has the correct permissions to the folder and the sub-folders to create a config file (only necessary if you get an error saying "Cannot create config...").
+    - Navigate to the directory you uploaded the files to. It should automatically redirect you to the install page.
 
 # Credits
 - [Bootstrap](http://getbootstrap.com/)

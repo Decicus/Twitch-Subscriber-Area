@@ -86,7 +86,8 @@
                                 ?>
                                 <div class="alert alert-success">Welcome <span class="bold"><?php echo $displayName; ?></span>. You are successfully logged in and fully authenticated.</div>
                                 <?php
-                                $getSubStreams = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) )['meta_value'], true );
+                                $fetchSubStreams = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams';" ) );
+                                $getSubStreams = json_decode( $fetchSubStreams['meta_value'], true );
                                 if( !empty( $getSubStreams ) || $isAdmin || $isMod ) {
                                     $streamCount = count( $getSubStreams );
                                     if( $isAdmin ) {

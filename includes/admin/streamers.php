@@ -1,5 +1,6 @@
 <?php
-    $getStreamers = json_decode( mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams' LIMIT 1;" ) )['meta_value'], true );
+    $fetchStreamers = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='subscriber_streams' LIMIT 1;" ) );
+    $getStreamers = json_decode( $fetchStreamers['meta_value'], true );
     if( !empty( $_POST['addStream'] ) ) {
         $addStreamName = mysqli_real_escape_string( $con, $_POST['addStream'] );
         $addStreamUID = $Twitch->getUserID( $_POST['addStream'] );

@@ -1,6 +1,6 @@
 <?php
     if( is_file( './finished.txt' ) ) { header( 'Location: ../' ); }
-    $TSAURL = ( isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . str_replace(  [ basename( __FILE__ ), 'install/' ], '', $_SERVER['REQUEST_URI'] );
+    $TSAURL = ( isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . str_replace( array( basename( __FILE__ ), 'install/' ), '', $_SERVER['REQUEST_URI'] );
     $TSAURL = ( strpos( $TSAURL, '/', strlen( $TSAURL ) - 1 ) ? substr( $TSAURL, 0, -1 ) : $TSAURL ); // Remove '/' at the end of a URL.
     session_start();
     $_SESSION['TSAURL'] = $TSAURL;

@@ -4,7 +4,7 @@
     <li class="list-group-item list-group-item-<?php echo ( PHP_VERSION >= 5.5 ? 'success' : 'danger' ); ?>">PHP 5.5+ &mdash; You have: <strong>PHP <?php echo PHP_VERSION; ?></strong></li>
     <li class="list-group-item list-group-item-<?php echo ( function_exists( 'curl_version' ) ? 'success' : 'danger' ); ?>">cURL extension for PHP &mdash; <strong><?php echo ( function_exists( 'curl_version' ) ? 'Enabled' : 'Disabled' ); ?></strong></li>
     <li class="list-group-item list-group-item-<?php echo ( function_exists( 'mysqli_connect' ) ? 'success' : 'danger' ); ?>">A MySQL database with PHP extension "MySQLi" enabled &mdash; <strong><?php echo ( function_exists( 'mysqli_connect' ) ? 'Enabled' : 'Disabled' ); ?></strong></li>
-    <li class="list-group-item list-group-item-<?php echo ( is_writable( implode( DIRECTORY_SEPARATOR, array( '..', 'includes' ) ) ) ? 'success' : 'danger' ); ?>">'includes' folder in main directory writable. - <strong>Required under installation for creating configuration file</strong>.</li>
+    <li class="list-group-item list-group-item-<?php echo ( is_writable( implode( DIRECTORY_SEPARATOR, array( '..', 'includes', 'config.php' ) ) ) ? 'success' : 'danger' ); ?>">'includes' folder in main directory writable. - <strong>Required under installation for creating configuration file</strong>.</li>
     <li class="list-group-item list-group-item-success">Twitch API developer application information as described on the main install page.</li>
 </ul>
 

@@ -1,0 +1,3 @@
+<?php
+    // Blank configuration placeholder
+?>

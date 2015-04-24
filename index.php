@@ -1,7 +1,7 @@
 <?php
     error_reporting( 0 );
-    require 'includes/check_install.php';
     require 'includes/main.php';
+    require 'includes/check_install.php';
     $page = 'index';
 
     if( $installFinished && !$installExists ) {

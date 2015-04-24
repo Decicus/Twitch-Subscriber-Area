@@ -1,6 +1,6 @@
 <?php
-    require 'includes/check_install.php';
     require 'includes/main.php';
+    require 'includes/check_install.php';
     $page = 'admin';
     if( !isset( $_SESSION['isAdmin'] ) || $_SESSION['isAdmin'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
 

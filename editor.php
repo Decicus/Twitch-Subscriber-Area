@@ -1,6 +1,6 @@
 <?php
-    require 'includes/check_install.php';
     require 'includes/main.php';
+    require 'includes/check_install.php';
     $page = 'editor';
     if( !isset( $_SESSION['isMod'] ) || $_SESSION['isMod'] == 0 ) { header( 'Location: ' . TSA_REDIRECTURL ); }
 

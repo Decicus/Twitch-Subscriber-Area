@@ -23,19 +23,29 @@
             if( !$con ) {
                 echo '<div class="alert alert-danger">MySQL Error! <strong>' . mysqli_error( $con ) . '</strong></div>';
             } else {
+                $dbConstants = array(
+                    'TSA_DB_HOST' => $db_host,
+                    'TSA_DB_USER' => $db_user,
+                    'TSA_DB_PASS' => $db_pass,
+                    'TSA_DB_NAME' => $db_name,
+                    'TSA_DB_PREFIX' => $db_tblprefix
+                );
+                $twitchConstants = array(
+                    'TSA_APIKEY' => $twitch_apikey,
+                    'TSA_APISECRET' => $twitch_secret,
+                    'TSA_REDIRECTURL' => $twitch_redirect
+                );
                 if( is_writeable( $configFile ) ) {
                     $config = "<?php \n";
                     $config .= "    // MySQL database information\n";
-                    $config .= "    define( 'TSA_DB_HOST', '" . $db_host . "' );\n";
-                    $config .= "    define( 'TSA_DB_USER', '" . $db_user . "' );\n";
-                    $config .= "    define( 'TSA_DB_PASS', '" . $db_pass . "' );\n";
-                    $config .= "    define( 'TSA_DB_NAME', '" . $db_name . "' );\n";
-                    $config .= "    define( 'TSA_DB_PREFIX', '" . $db_tblprefix . "' );\n\n";
-                    $config .= "    // Twitch API stuff\n";
-                    $config .= "    define( 'TSA_APIKEY', '" . $twitch_api_key . "' );\n";
-                    $config .= "    define( 'TSA_APISECRET', '" . $twitch_secret . "' );\n";
-                    $config .= "    define( 'TSA_REDIRECTURL', '" . $twitch_redirect . "' );\n";
-                    $confWrite = fopen( $configFile, 'w' ) or die( 'Cannot create config file. Please make sure the web server user has the correct permissions.' );
+                    foreach( $dbConstants as $const => $value ) {
+                        $config .= "    define( '" . $const . "', '" . $value . "' );\n";
+                    }
+                    $config .= "\n    // Twitch API stuff\n";
+                    foreach( $twitchConstants as $const => $value ) {
+                        $config .= "    define( '" . $const . "', '" . $value . "' );\n";
+                    }
+                    $confWrite = fopen( $configFile, 'w' ) or die( 'Cannot open configuration file. Please make sure the web server user has the correct permissions to \'includes/config.php\'.' );
                     fwrite( $confWrite, $config, strlen( $config ) );
                     fclose( $confWrite );
                     $db_tblprefix = mysqli_real_escape_string( $con, $db_tblprefix );
@@ -56,7 +66,7 @@
                     }
                 } else {
                     ?>
-                    <div class="alert alert-danger">Unable to write configuration file in 'includes' folder of the base directory.</div>
+                    <div class="alert alert-danger">Unable to write to configuration file 'includes/config.php'.</div>
                     <?php
                 }
             }

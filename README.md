@@ -15,6 +15,9 @@ The point of this project specifically, is to create something similar for other
 - A MySQL database.
 - A [Twitch developer application](http://www.twitch.tv/settings/connections) registered with the client ID and client secret (redirect URL will be explained on the installation page).
 
+# Downloads
+The most recommended downloads will be located in [Releases](/releases).
+
 # Installation
 - Before installation, it's recommended to have a MySQL database ready with the information, as well as your Twitch developer application info (client ID + client secret).  
 - Upload the files to your web server.

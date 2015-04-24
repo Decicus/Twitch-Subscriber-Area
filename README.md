@@ -9,8 +9,8 @@ Moving further on, I made a [similar website](https://blacklist.rocks/) that wou
 The point of this project specifically, is to create something similar for others to use as well, but without them having to do it all from scratch.
 
 # Requirements
-- Apache web server (*Note:* This isn't necessarily a requirement, but it has only been properly tested in Apache environments).
-- PHP 5.5+ (PHP 5.5 was the test versions - Earlier versions may work just as fine, but it requires *at least* PHP 5.0).
+- Web server (preferably Apache with "AllowOverride" enabled for .htaccess).
+- PHP 5.3+ (PHP 5.3 was the earliest test version - Earlier versions *may* work just as fine, but it requires *at least* PHP 5.0).
 - cURL and MySQLi extensions for PHP.
 - A MySQL database.
 - A [Twitch developer application](http://www.twitch.tv/settings/connections) registered with the client ID and client secret (redirect URL will be explained on the installation page).
@@ -27,6 +27,9 @@ The point of this project specifically, is to create something similar for other
     - License: [Bootstrap License (MIT License)](https://github.com/twbs/bootstrap/blob/master/LICENSE)
 - [Twitch (Kraken) API](https://github.com/justintv/Twitch-API)
 
+# Special thanks
+- [obnoxiousfrog](https://github.com/obnoxiousfrog) for helping me test, troubleshoot and giving advice. <3
+
 # Other notes
 - The design behind this project is based heavily around [Bootstrap](http://getbootstrap.com/), which may be an issue for those who already have an existing website with an existing design they wish to use. I would recommend checking out [Bootswatch](https://bootswatch.com/) in case you want to take a look at some alternative layouts, if you are not able to extract the code from this project into the current design. (Take a look at [Themes](#themes) for more info on how you can change the layout)
 - Connection to the Twitch API is done through a modified version of [another project](https://github.com/Decicus/Twitch-API-PHP) I have.
@@ -35,6 +38,7 @@ The point of this project specifically, is to create something similar for other
 - This has been tested under the following environments:
     - Apache 2.4.9, MySQL server 5.6.17, PHP 5.5.12 (Windows 7 64-bit & Windows 8.1 64-bit)
     - Apache 2.4.10, MySQL server 5.5.43, PHP 5.5.12 (Ubuntu 14.10)
+    - nginx 1.4.6, MySQL server 5.5.41, PHP 5.3.29 (Ubuntu 14.04) - Thanks to [obnoxiousfrog](https://github.com/obnoxiousfrog)
 
 # License
 This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE), which basically says; "Do what you want, just don't sue me if anything goes wrong."

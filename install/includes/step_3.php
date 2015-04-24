@@ -31,7 +31,7 @@
                     'TSA_DB_PREFIX' => $db_tblprefix
                 );
                 $twitchConstants = array(
-                    'TSA_APIKEY' => $twitch_apikey,
+                    'TSA_APIKEY' => $twitch_api_key,
                     'TSA_APISECRET' => $twitch_secret,
                     'TSA_REDIRECTURL' => $twitch_redirect
                 );

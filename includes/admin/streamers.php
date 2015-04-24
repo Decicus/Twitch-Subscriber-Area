@@ -8,7 +8,7 @@
             $streamPartner = $Twitch->isPartner( $_POST['addStream'] );
             if( !isset( $getStreamers[ $addStreamUID ] ) ) {
                 if( $streamPartner ) {
-                    $getStreamers[ $addStreamUID ] = ( 'name' => $addStreamName );
+                    $getStreamers[ $addStreamUID ] = array( 'name' => $addStreamName );
                     $newStreamsArray = json_encode( $getStreamers );
                     $updateStreams = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $newStreamsArray . "' WHERE meta_key='subscriber_streams';";
                     if( !mysqli_query( $con, $updateStreams ) ) {

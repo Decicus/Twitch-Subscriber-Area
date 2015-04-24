@@ -21,6 +21,21 @@ The point of this project specifically, is to create something similar for other
     - Make sure the web server user has the correct permissions to the 'includes/config.php' to create a config file (only necessary if you get an error saying "Cannot create config...").
         - The file it requires permissions to, is the main directory's 'includes/config.php' file.
     - Navigate to the directory you uploaded the files to. It should automatically redirect you to the install page.
+- Follow the steps on the installation page. If you have successfully installed it, please make sure to remove (preferred) or rename/move the 'install' folder.
+
+# Current features
+- Supports one or multiple partnered streamers that you can verify someone is subscribed to.
+    - Keep in mind, it will go through them all until it either A) finds a streamer that the user is subscribed or B) goes to the end of the list. If the user is subscribed, they will get access.
+- Website moderators and administrators.
+    - Moderators have the ability see, add, edit and delete posts that subscribers can see when they are authenticated.
+    - Administrators can do what moderators can do, plus changing the title and main description, add/remove streamers to check subscriptions towards, managing moderators and managing other administrators. Please note that **any administrator has the power to remove other administrators**.
+    - Neither moderators or administrators are required to be subscribed to access the website.
+- Semi-support for [changing website theme](#themes).
+
+# Planned features
+- A whitelist for users (such as those who live in a country where they are unable to subscribe).
+- A blacklist for users (such as subscribers who have abused their access).
+- A page dedicated for displaying all the subscriber emotes.
 
 # Credits
 - [Bootstrap](http://getbootstrap.com/)
@@ -41,7 +56,7 @@ The point of this project specifically, is to create something similar for other
     - nginx 1.4.6, MySQL server 5.5.41, PHP 5.3.29 (Ubuntu 14.04) - Thanks to [obnoxiousfrog](https://github.com/obnoxiousfrog)
 
 # License
-This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE), which basically says; "Do what you want, just don't sue me if anything goes wrong."
+This is licensed under [MIT License](https://github.com/Decicus/Twitch-Subscriber-Area/blob/master/LICENSE).
 
 # Contact
 Bugs/issues should go on the "Issues" page most of the time. Other questions or inquiries can be sent via the following methods:

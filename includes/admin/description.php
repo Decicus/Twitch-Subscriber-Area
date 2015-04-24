@@ -1,6 +1,6 @@
 <?php
     $fetchDescription = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='main_text' LIMIT 1;" ) );
-    $pageDescription = $fetchDescription['meta_value'];
+    $pageDescription = stripslashes( $fetchDescription['meta_value'] );
     if( !empty( $_POST['pageDesc'] ) ) {
         $newPageDesc = mysqli_real_escape_string( $con, $_POST['pageDesc'] );
         $newPageDescQuery = "UPDATE " . TSA_DB_PREFIX . "settings SET meta_value='" . $newPageDesc . "' WHERE meta_key='main_text';";

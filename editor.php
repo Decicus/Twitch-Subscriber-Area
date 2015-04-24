@@ -157,8 +157,8 @@
                             $postBody = $row['body'];
                             ?>
                             <div class="panel panel-primary">
-                                <div class="panel-heading"><h3 class="panel-title"><?php echo $postTitle; ?></h3></div>
-                                <div class="panel-body"><?php echo nl2br( $postBody ); ?></div>
+                                <div class="panel-heading"><h3 class="panel-title"><?php echo stripslashes( $postTitle ); ?></h3></div>
+                                <div class="panel-body"><?php echo stripslashes( nl2br( $postBody ) ); ?></div>
                                 <div class="panel-footer">
                                     <a href="<?php echo TSA_REDIRECTURL; ?>/editor.php?edit=<?php echo $postID; ?>" class="btn btn-warning">Edit</a>
                                     <a href="<?php echo TSA_REDIRECTURL; ?>/editor.php?delete=<?php echo $postID; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>

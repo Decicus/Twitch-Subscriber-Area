@@ -42,7 +42,7 @@
                                 $insertPost = mysqli_query( $con, "INSERT INTO " . TSA_DB_PREFIX . "posts( title, body ) VALUES( '" . $addPostTitle . "', '" . $addPostBody . "' );" );
                                 if( $insertPost ) {
                                     ?>
-                                    <div class="alert alert-success">Post "<?php echo $addPostTitle; ?>" has been added!</div>
+                                    <div class="alert alert-success">Post "<?php echo stripslashes( $addPostTitle ); ?>" has been added!</div>
                                     <?php
                                 } else {
                                     ?>
@@ -92,7 +92,7 @@
                                 $editPostBody = mysqli_real_escape_string( $con, $_POST['editPostBody'] );
                                 if( mysqli_query( $con, "UPDATE " . TSA_DB_PREFIX . "posts SET title='" . $editPostTitle . "', body='" . $editPostBody . "' WHERE id='" . $editID ."';" ) ) {
                                     ?>
-                                    <div class="alert alert-success">Post "<?php echo $editPostTitle; ?>" has been edited.</div>
+                                    <div class="alert alert-success">Post "<?php echo stripslashes( $editPostTitle ); ?>" has been edited.</div>
                                     <?php
                                 } else {
                                     ?>

@@ -116,8 +116,8 @@
                                         while( $row = mysqli_fetch_array( $fetchPosts ) ) {
                                             $hasPosts = true;
                                             $postID = $row['id'];
-                                            $postTitle = $row['title'];
-                                            $postText = nl2br( $row['body'] );
+                                            $postTitle = stripslashes( $row['title'] );
+                                            $postText = stripslashes( nl2br( $row['body'] ) );
                                             ?>
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading"><?php echo $postTitle; ?></div>

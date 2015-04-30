@@ -23,6 +23,14 @@
         $getAdmins = json_decode( $fetchAdmins['meta_value'], true );
         $fetchMods = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) );
         $getMods = json_decode( $fetchMods['meta_value'], true );
+        
+        $fetchWLUser = mysqli_query( $con, "SELECT name FROM " . TSA_DB_PREFIX . "whitelist WHERE uid='$userID' LIMIT 1;" );
+        $_SESSION['whitelisted'] = 0;
+        $isWhitelisted = false;
+        if( mysqli_num_rows( $fetchWLUser ) == 1 ) {
+            $_SESSION['whitelisted'] = 1;
+            $isWhitelisted = true;
+        }
 
         if( isset( $getAdmins[ $userID ] ) ) {
             $_SESSION['isAdmin'] = 1;
@@ -105,7 +113,7 @@
                                     }
                                     $firstStreamerKey = array_keys( $getSubStreams );
                                     $firstStreamer = $getSubStreams[ $firstStreamerKey[ 0 ] ][ 'name' ];
-                                    if( $isSubbed || $isMod ) {
+                                    if( $isSubbed || $isMod || $isWhitelisted ) {
                                         if( $isSubbed ) {
                                             ?>
                                             <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $firstStreamer : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>

@@ -37,7 +37,8 @@
                         'moderators' => 'Modify site moderators (only access to add, edit or delete posts). Will naturally have access to see the posts as well.',
                         'title' => 'Change the title of this website.',
                         'description' => 'Modify the homepage description.',
-                        'streamers' => 'Modify the list of partnered streamers supported on this site.'
+                        'streamers' => 'Modify the list of partnered streamers supported on this site.',
+                        'whitelist' => 'Users that have access to the subscriber area without being a subscriber or mod/admin.'
                     );
                     $currentPage = "";
                     if( isset( $_GET['page'] ) && isset( $pages[ $_GET['page'] ] ) ) {

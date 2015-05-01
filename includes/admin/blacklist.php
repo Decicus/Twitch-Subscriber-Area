@@ -86,6 +86,7 @@
 	</div>
 </div>
 
+<div class="alert alert-danger">Blacklisted users:</div>
 <?php
 	while( $row = mysqli_fetch_array( $getBlacklist ) ) {
 		?>

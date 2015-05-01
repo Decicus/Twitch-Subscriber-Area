@@ -23,13 +23,24 @@
         $getAdmins = json_decode( $fetchAdmins['meta_value'], true );
         $fetchMods = mysqli_fetch_array( mysqli_query( $con, "SELECT meta_value FROM " . TSA_DB_PREFIX . "settings WHERE meta_key='moderators' LIMIT 1;" ) );
         $getMods = json_decode( $fetchMods['meta_value'], true );
-        
+
         $fetchWLUser = mysqli_query( $con, "SELECT name FROM " . TSA_DB_PREFIX . "whitelist WHERE uid='$userID' LIMIT 1;" );
         $_SESSION['whitelisted'] = 0;
         $isWhitelisted = false;
         if( mysqli_num_rows( $fetchWLUser ) == 1 ) {
             $_SESSION['whitelisted'] = 1;
             $isWhitelisted = true;
+        }
+
+        $fetchBLUser = mysqli_query( $con, "SELECT name, reason FROM " . TSA_DB_PREFIX . "blacklist WHERE uid='$userID' LIMIT 1;" );
+        $_SESSION['blacklisted'] = 0;
+        $blacklistReason = '';
+        $isBlacklisted = false;
+        if( mysqli_num_rows( $fetchWLUser ) == 1 ) {
+            $fetchBLData = mysqli_fetch_array( $fetchBLUser );
+            $_SESSION['blacklisted'] = 1;
+            $blacklistReason = $fetchBLData['reason'];
+            $isBlacklisted = true;
         }
 
         if( isset( $getAdmins[ $userID ] ) ) {
@@ -52,6 +63,21 @@
                 $_SESSION['isMod'] = 0;
                 $isMod = false;
             }
+        }
+    } elseif( isset( $_GET['code'] ) ) {
+        $code = $_GET['code'];
+        $at = $Twitch->getAccessToken( $code );
+        $username = $Twitch->getName( $at );
+        $displayName = $Twitch->getDisplayName( $at );
+        $userID = $Twitch->getUserIDFromAT( $at );
+        if( $at && $username && $displayName && $userID ) {
+            $_SESSION['access_token'] = $at;
+            $_SESSION['username'] = $username;
+            $_SESSION['display_name'] = $displayName;
+            $_SESSION['user_id'] = $userID;
+            header( 'Location: ' . TSA_REDIRECTURL );
+        } else {
+            header( 'Location: ' . TSA_REDIRECTURL . '?invalid' );
         }
     }
 ?>
@@ -78,6 +104,12 @@
                     <div class="jumbotron">
                         <p class="text text-info"><?php echo nl2br( $main_text ); ?></p>
                         <?php
+                            if( isset( $_GET['invalid'] ) ) {
+                                ?>
+                                <div class="alert alert-danger">Invalid authorization code. Please <a href="<?php echo $authenticateURL; ?>" class="alert-link">re-authenticate</a>.</div>
+                                <?php
+                            }
+                            
                             if( isset( $_SESSION['access_token'] ) ) {
                                 ?>
                                 <div class="alert alert-success">Welcome <span class="bold"><?php echo $displayName; ?></span>. You are successfully logged in and fully authenticated.</div>
@@ -113,7 +145,7 @@
                                     }
                                     $firstStreamerKey = array_keys( $getSubStreams );
                                     $firstStreamer = $getSubStreams[ $firstStreamerKey[ 0 ] ][ 'name' ];
-                                    if( $isSubbed || $isMod || $isWhitelisted ) {
+                                    if( $isSubbed || $isMod || $isWhitelisted && !$isBlacklisted ) {
                                         if( $isSubbed ) {
                                             ?>
                                             <div class="alert alert-success">You are subscribed to <?php echo ( $streamCount == 1 ? $firstStreamer : 'one or more streamers in the list' ); ?> and will now have access to the subscriber posts.</div>
@@ -138,6 +170,13 @@
                                             <div class="alert alert-warning">There are no posts :(</div>
                                             <?php
                                         }
+                                    } elseif( $isBlacklisted ) {
+                                        ?>
+                                        <div class="panel panel-danger">
+                                            <div class="panel-heading">You have been blacklisted from using this subscriber area &mdash; Reason:</div>
+                                            <div class="panel-body"><?php echo nl2br( $blacklistReason ); ?></div>
+                                        </div>
+                                        <?php
                                     } else {
                                         if( $atError ) {
                                             echo $atError;
@@ -173,23 +212,6 @@
                                 ?>
                                 <a href="<?php echo TSA_REDIRECTURL; ?>/?logout" class="btn btn-danger">Logout</a>
                                 <?php
-                            } elseif( isset( $_GET['code'] ) ) {
-                                $code = $_GET['code'];
-                                $at = $Twitch->getAccessToken( $code );
-                                $username = $Twitch->getName( $at );
-                                $displayName = $Twitch->getDisplayName( $at );
-                                $userID = $Twitch->getUserIDFromAT( $at );
-                                if( $at && $username && $displayName && $userID ) {
-                                    $_SESSION['access_token'] = $at;
-                                    $_SESSION['username'] = $username;
-                                    $_SESSION['display_name'] = $displayName;
-                                    $_SESSION['user_id'] = $userID;
-                                    header( 'Location: ' . TSA_REDIRECTURL );
-                                } else {
-                                    ?>
-                                    <div class="alert alert-danger">Invalid authorization code. Please <a href="<?php echo $authenticateURL; ?>" class="alert-link">re-authenticate</a>.</div>
-                                    <?php
-                                }
                             } else {
                                 ?>
                                 <a href="<?php echo $authenticateURL ?>"><img src="images/twitch_connect.png" alt="Connect with Twitch" /></a>

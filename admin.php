@@ -38,7 +38,8 @@
                         'title' => 'Change the title of this website.',
                         'description' => 'Modify the homepage description.',
                         'streamers' => 'Modify the list of partnered streamers supported on this site.',
-                        'whitelist' => 'Users that have access to the subscriber area without being a subscriber or mod/admin.'
+                        'whitelist' => 'Users that have access to the subscriber area without being a subscriber or mod/admin.',
+                        'blacklist' => 'Users that are blocked from having access to the subscriber area.'
                     );
                     $currentPage = "";
                     if( isset( $_GET['page'] ) && isset( $pages[ $_GET['page'] ] ) ) {
